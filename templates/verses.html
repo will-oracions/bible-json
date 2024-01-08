@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h2>{{ book.name }} : {{ chapter_number }}</h2>
+
+    <table>
+      <!-- <thead>
+        <tr>
+          <th>Verse Number</th>
+          <th>Verse Text</th>
+        </tr>
+      </thead> -->
+      <tbody>
+        {% for verse in verses %}
+        <tr>
+          <td>{{ verse.number }}</td>
+          <td>{{ verse.text }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>

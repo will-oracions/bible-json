@@ -68,9 +68,34 @@ def add_book():
 
 # Route pour afficher les chapitres d'un livre
 @app.route('/book/<slug>')
-def view_book(slug):
-    book = Book.query.filter_by(slug=slug).first_or_404()
-    return render_template('view_book.html', book=book)
+def chapters_page(slug):
+    # Récupérez le livre associé au slug
+    book = Book.query.filter_by(slug=slug).first()
+    if not book:
+        return render_template('404.html'), 404
+
+    # Récupérez les chapitres associés au livre depuis la base de données
+    book_chapters = Chapter.query.filter_by(book_id=book.id).all()
+
+    return render_template('chapters.html', book=book, chapters=book_chapters)
+
+@app.route('/verses/<slug>/<int:chapter_number>')
+def verses(slug, chapter_number):
+    # Récupérez le livre associé au slug
+    book = Book.query.filter_by(slug=slug).first()
+    if not book:
+        return render_template('404.html'), 404
+
+    # Récupérez le chapitre associé au livre et au numéro du chapitre
+    chapter = Chapter.query.filter_by(book_id=book.id, number=chapter_number).first()
+    if not chapter:
+        return render_template('404.html'), 404
+
+    # Récupérez tous les versets associés au chapitre depuis la base de données
+    chapter_verses = Verse.query.filter_by(chapter_id=chapter.id).all()
+
+    return render_template('verses.html', book=book, chapter_number=chapter_number, verses=chapter_verses)
+
 
 # Route pour ajouter un chapitre à un livre
 @app.route('/add_chapter/<slug>', methods=['POST'])
