@@ -3,24 +3,24 @@ from flask_sqlalchemy import SQLAlchemy
 from slugify import slugify
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bible_database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bible.db'
 db = SQLAlchemy(app)
 
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(255), nullable=False)
+    name = db.Column(db.String(255), nullable=False)
     slug = db.Column(db.String(255), nullable=False, unique=True)
     chapters = db.relationship('Chapter', backref='book', lazy=True)
 
     def generate_slug(self):
-        if len(self.title.split()) == 1:
-            return slugify(self.title.lower())
+        if len(self.name.split()) == 1:
+            return self.name.lower()
 
-        first_word, *rest = self.title.split()
+        first_word, *rest = self.name.split()
         if first_word.isdigit():
-            return slugify(f"{first_word}{rest[0].lower()}")
+            return f"{first_word}{rest[0].lower()}"
 
-        return slugify(first_word.lower())
+        return first_word.lower()
 
 class Chapter(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -56,10 +56,10 @@ def index():
 # Route pour ajouter un livre
 @app.route('/add_book', methods=['POST'])
 def add_book():
-    title = request.form['title']
-    slug = slugify(title)
+    name = request.form['name']
+    slug = slugify(name)
     
-    new_book = Book(title=title, slug=slug)
+    new_book = Book(name=name, slug=slug)
     new_book.slug = new_book.generate_slug()
     db.session.add(new_book)
     db.session.commit()
