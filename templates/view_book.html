@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ book.title }}</title>
+  </head>
+  <body>
+    <h1>{{ book.title }}</h1>
+    <ul>
+      {% for chapter in book.chapters %}
+      <li>
+        <a
+          href="{{ url_for('view_chapter', book_slug=book.slug, chapter_slug=chapter.slug) }}"
+          >Chapitre {{ chapter.number }}</a
+        >
+      </li>
+      {% endfor %}
+    </ul>
+
+    <h2>Ajouter un chapitre</h2>
+    <form method="post" action="{{ url_for('add_chapter', slug=book.slug) }}">
+      <label for="number">Numéro du chapitre:</label>
+      <input type="text" id="number" name="number" required />
+      <button type="submit">Ajouter</button>
+    </form>
+  </body>
+</html>

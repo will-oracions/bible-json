@@ -1,0 +1,8 @@
+version: "3"
+
+services:
+  seed-script:
+    build: .
+    volumes:
+      - ./data:/app/data
+      - ./seed.py:/app/seed.py

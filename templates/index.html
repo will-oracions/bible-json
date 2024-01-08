@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bible App</title>
+  </head>
+  <body>
+    <h1>Liste des Livres</h1>
+    <ul>
+      {% for book in books %}
+      <li>
+        <a href="{{ url_for('view_book', slug=book.slug) }}"
+          >{{ book.title }}</a
+        >
+      </li>
+      {% endfor %}
+    </ul>
+
+    <h2>Ajouter un livre</h2>
+    <form method="post" action="{{ url_for('add_book') }}">
+      <label for="title">Titre du livre:</label>
+      <input type="text" id="title" name="title" required />
+      <button type="submit">Ajouter</button>
+    </form>
+  </body>
+</html>
