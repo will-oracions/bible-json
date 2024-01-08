@@ -10,7 +10,9 @@
     <ul>
       {% for book in books %}
       <li>
-        <a href="{{ url_for('view_book', slug=book.slug) }}">{{ book.name }}</a>
+        <a href="{{ url_for('chapters_page', slug=book.slug) }}"
+          >{{ book.name }}</a
+        >
       </li>
       {% endfor %}
     </ul>
