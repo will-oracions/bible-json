@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from slugify import slugify
+from update import *
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///bible.db'
@@ -11,6 +12,8 @@ class Book(db.Model):
     name = db.Column(db.String(255), nullable=False)
     slug = db.Column(db.String(255), nullable=False, unique=True)
     chapters = db.relationship('Chapter', backref='book', lazy=True)
+    testament = db.Column(db.Enum('1', '2'), nullable=True)
+    name_fr = db.Column(db.String(100), nullable=True)
 
     def generate_slug(self):
         if len(self.name.split()) == 1:
@@ -50,6 +53,7 @@ with app.app_context():
 # Route principale pour afficher la liste des livres
 @app.route('/')
 def index():
+    update_books()
     books = Book.query.all()
     return render_template('index.html', books=books)
 
@@ -109,6 +113,34 @@ def add_chapter(slug):
     db.session.commit()
 
     return redirect(url_for('view_book', slug=slug))
+
+
+def update_books():
+    # Liste des noms en français des livres de l'Ancien Testament
+    french_names_old_testament = [
+        {'slug': 'genesis', 'name_fr': 'Genèse'},
+    ]
+
+    # Liste des noms en français des livres du Nouveau Testament
+    french_names_new_testament = [
+        {'slug': 'matthew', 'name_fr': 'Matthieu'},
+    ]
+
+    # Mettre à jour les livres de l'Ancien Testament
+    for book_info in french_names_old_testament:
+        book = Book.query.filter_by(slug=book_info['slug']).first()
+        if book:
+            book.testament = 'Ancien Testament'
+            book.name_fr = book_info['name_fr']
+            db.session.commit()
+
+    # Mettre à jour les livres du Nouveau Testament
+    for book_info in french_names_new_testament:
+        book = Book.query.filter_by(slug=book_info['slug']).first()
+        if book:
+            book.testament = 'Nouveau Testament'
+            book.name_fr = book_info['name_fr']
+            db.session.commit()
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,22 @@
+{
+  "pageProps": {
+    "audioVersionInfo": {},
+    "chapterInfo": {
+      "audioChapterInfo": [
+        {
+          "download_urls": {
+            "format_mp3_32k": "//audio-bible-cdn.youversionapi.com/407/32k/DEU/16-e92673f3bb3089ed11374b77f93132a1.mp3?version_id=21",
+            "format_hls": "//audio-hls.youversionapi.com/407/m4a/32k/DEU/16-e92673f3bb3089ed11374b77f93132a1.m3u8?version_id=21"
+          },
+          "id": 407,
+          "version_id": 21,
+          "title": "La Bible du Semeur",
+          "timing_available": true,
+          "dramatized": false,
+          "default": true
+        }
+      ]
+    }
+  },
+  "__N_SSG": true
+}
