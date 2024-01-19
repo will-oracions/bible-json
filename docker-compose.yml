@@ -1,8 +1,18 @@
 version: "3"
 
 services:
-  seed-script:
-    build: .
+  #   seed-script:
+  #     build: .
+  #     volumes:
+  #       - ./data:/app/data
+  #       - ./seed.py:/app/seed.py
+
+  get-audios-sem:
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
-      - ./data:/app/data
-      - ./seed.py:/app/seed.py
+      - ./audio-v-sem:/app/audio_files
+      - ./get_audios.py:/app/get_audios.py
+      - ./input.py:/app/input.py
+    command: pipenv run python get_audios.py
